@@ -1,0 +1,481 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- Nunito Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+        <!-- AOS Animatin -->
+        <!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
+
+        <style>
+            .float-left{
+                float: left;
+            }
+            .w-100{
+                width: 100%;
+            }
+            .hide{
+                display: none;
+            }
+            .show{
+                display: block;
+            }
+
+            /* Toggle Services */
+            .toggle {
+                    margin: 0 0 1.5rem;
+                    box-sizing: border-box;
+                    font-size: 0;
+            }
+            .toggle-item {
+                margin-bottom: 5px;
+                margin-left: 5px;
+            }
+            .toggle input {
+                width: 0;
+                height: 0;
+                position: absolute;
+                left: -9999px;
+            }
+            .toggle input + label {
+                float: left;
+                margin: 0;
+                padding: 7px 11px;
+                box-sizing: border-box;
+                position: relative;
+                border: solid 1px #DDD;
+                background-color: #FFF;
+                font-size: 12px;
+                text-align: center;
+                box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .toggle input + label img{
+                width: 30px;
+            }
+            .toggle input + label .service-name{
+                font-size: 14px;
+                text-align: center;
+            }
+            .toggle input:hover + label {
+                border-color: #213140;
+                background-color: #d2dce2;
+                color: #213140;
+            }
+            .toggle input:checked + label {
+                background-color: #253138;
+                color: #213140;
+                background-color: #d2dce2;
+                z-index: 1;
+                border: 1px solid #253138;
+            }
+            /* Chat bot customization */
+            .chatbot-wrapper {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                font-family: "Nunito", sans-serif;
+            }
+            .chatbot-wrapper p{
+                font-size: 16px;
+                margin: 0;
+            }
+            .chatbot-wrapper .chatbot-icon img{
+                width: 50px;
+                cursor: pointer;
+            }
+            .chatbot-wrapper .chatbot-content{
+                position: absolute;
+                right: 0;
+                bottom: 50px;
+                box-shadow: 0 -1px 20px rgba(0, 0, 0, .16);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            .chatbot-header{
+                float: left;
+                width: 320px;
+                background-color: #253138;
+                color: #fff;
+                padding: 20px 15px;
+            }
+            .chatbot-header .logo{
+                width: 30px;
+            }
+            .chatbot-header .welcome-text{
+                font-size: 20px;
+                color: #fff;
+                margin-bottom: 8px;
+            }
+            .chatbot-header .info-text{
+                font-size: 14px;
+                color:#92989b
+            }
+            .chatbot-header .close-chat img {
+                filter: brightness(0) invert(1);
+                position: absolute;
+                right: 15px;
+                top: 15px;
+                opacity: 0.6;
+                cursor: pointer;
+            }
+            .chat-messages{
+                float: left;
+                width: 320px;
+                padding: 15px;
+                height: 60vh;
+                overflow-y: scroll;
+            }
+            .chat-messages .agent-message{
+                margin-bottom: 10px;
+            }
+            .chat-messages .agent-message .agent-pic {
+                float: left;
+                width: 30px;
+            }
+            .chat-messages .agent-message .agent-pic img{
+                width: 100%;
+            }
+            .chat-messages .agent-message .agent-msg{
+                float: right;
+                width: calc(100% - 35px)
+            }
+            .chat-messages .agent-message.agent-suggestion .toggle .toggle-item , .chat-messages .agent-message.agent-suggestion .toggle input + label{
+                width: 100%;
+            }
+            .chat-messages .agent-message.agent-suggestion .toggle input:hover + label, .chat-messages .agent-message.agent-suggestion .toggle input:checked + label{
+                background-color: #d2dce2
+            }
+            .agent-suggestion .toggle {
+                padding-left: 30px;
+            }
+            .chat-messages .agent-message .agent-msg p,
+            .user-message .user-msg p{
+                font-size: 14px;
+                border-radius: 0 10px 10px 10px;
+                background-color: #f1f1f1;
+                color: #3a4b67;
+                padding: 10px 15px;
+                line-height: 19px;
+            }
+            .user-message {
+                margin-bottom: 10px;
+            }
+            .user-message .user-pic {
+                float: right;
+                width: 25px;
+            }
+            .user-message .user-pic img{
+                width: 100%;
+            }
+            .user-message .user-msg {
+                float: right;
+                width: auto;
+                margin-right: 5px;
+            }
+            .user-message .user-msg p{
+                border-radius: 10px 0 10px 10px;
+                background-color: #253138;
+                color: #fff;
+                font-size: 12px;
+                padding: 7px 14px;
+            }
+            .chatbot-wrapper .input-field{
+                position: relative;
+                margin-bottom: 10px;
+                padding-left: 35px;
+                width: calc(100% - 35px);
+            }
+            .chatbot-wrapper .input-field .chat-icon{
+                float: right;
+                width: 30px;
+            }
+            .chatbot-wrapper .input-field .chat-icon img{
+                width: 100%;
+            }
+            .chatbot-wrapper .input-field .field-wrapper {
+                float: left;
+                width: calc(100% - 35px);
+                position: relative;
+            }
+            .chatbot-wrapper .input-field input{
+                padding: 15px 70px 15px 15px;
+                border: 1px solid #ccc;
+                border-radius: 10px 0 10px 10px;
+                outline: none;
+            }
+            .chatbot-wrapper .input-field .send-btn{
+                position: absolute;
+                bottom: 7px;
+                right: 7px;
+                background: #253138;
+                color: #fff;
+                padding: 7px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            /* Animation */
+            .animate-top{
+                animation: moveUp 0.8s;
+            }
+            .animate-top-second{
+                animation-delay: 1s;
+                animation: moveUp 1.8s;
+            }
+            
+            @keyframes moveUp {
+                from {margin-top: 60px;}
+                to {margin-top: 0;}
+            }
+            .delay-300{
+                animation: delay 1s;
+            }
+            @keyframes delay{
+                0%   {opacity: 0;}
+                75%  {opacity: 0;}
+                100% {opacity: 1;}
+            }
+        </style>
+    </head>
+    <body>
+        <div class="chatbot-wrapper">
+            <div class="chatbot-icon" onclick="expandChatbot()">
+                <img src="chatbot.png" />
+            </div>
+            <div class="chatbot-icon chatbot-close-icon hide" onclick="expandChatbot()">
+                <img src="chatbot.png" />
+            </div>
+            <div class="chatbot-content hide" id="chatbotWrapper">
+                <div class="chatbot-header">
+                    <div class="close-chat" onClick="closeChatbot()">
+                        <img src="x-circle.svg" />
+                    </div>
+                    <p class="welcome-text">Welcome To domain.com</p>
+                    <p class="info-text">We’re currently away. Please leave us a message!</p>
+                </div>
+                <div class="chat-messages">
+                    <div class="agent-message float-left w-100 animate-top">
+                        <div class="agent-pic">
+                            <img src="chatbot.png" />
+                        </div>
+                        <div class="agent-msg">
+                            <p class="typing-effect ">
+                                Hey there 👋! May I help you? 
+                                <br/>
+                                Get started using our quick links
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Services Selection  -->
+                    <div class="agent-message float-left w-100 delay-300">
+                        <div class="toggle">
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="service" value="Public Cloud" id="option1" onClick="selectedService()"/>
+                                <label for="option1">Public Cloud</label>
+                            </div>
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="service" value="Private Cloud" id="option2" onClick="selectedService()"/>
+                                <label for="option2">Private Cloud</label>
+                            </div>
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="service" value="Virtual Machine" id="option3" onClick="selectedService()"/>
+                                <label for="option3">Virtual Machine</label>
+                            </div>
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="service" value="Shared Hosting" id="option4" onClick="selectedService()"/>
+                                <label for="option4">Shared Hosting</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Selected Service -->
+                    <div class="user-message float-left w-100 animate-top hide" id="selection1">
+                        <div class="user-pic">
+                            <img src="agentpic.png" />
+                        </div>
+                        <div class="user-msg">
+                            <p id="selectedService"></p>
+                        </div>
+                    </div>
+
+                    <!-- If service 1 selected -->
+                    <div class="agent-message agent-suggestion float-left w-100 delay-300 hide" id="service1Selected">
+                        <div class="agent-message float-left w-100">
+                            <div class="agent-pic">
+                                <img src="chatbot.png" />
+                            </div>
+                            <div class="agent-msg">
+                                <p>Please select specific public cloud from below.</p>
+                            </div>
+                        </div>
+                        <div class="toggle float-left w-100 animate-top-second">
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="selectedService1" value="AWS" id="serviceOption1" onClick="showClientForm()"/>
+                                <label for="serviceOption1">
+                                    <img src="public-cloud/aws.svg" />
+                                    <span class="service-name float-left w-100">Amazon Web Services</span>
+                                </label>
+                            </div>
+                            <div class="toggle-item float-left">
+                                <input type="radio" name="selectedService1" value="Azure" id="serviceOption2" onClick="showClientForm()"/>
+                                <label for="serviceOption2">
+                                    <img src="public-cloud/azure.svg" />
+                                    <span class="service-name float-left w-100">Azure Cloud</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Details Form -->
+                    
+                    <!-- Gather Name/Organization  -->
+                    <div class="agent-message agent-suggestion float-left w-100 hide" id="clientForm">
+                        <div class="agent-message float-left w-100">
+                            <div class="agent-pic">
+                                <img src="chatbot.png" />
+                            </div>
+                            <div class="agent-msg">
+                                <p>Awesome 😀! With domain, you’ll get best service for <span id="subService" style="font-weight: bold;"></span></p>
+                            </div>
+                        </div>
+                        <div class="agent-message float-left w-100">
+                            <div class="agent-pic">
+                                <!-- <img src="agentpic.png" /> -->
+                            </div>
+                            <div class="agent-msg">
+                                <p>What is your Name/Organization?</p>
+                            </div>
+                        </div>
+                        <div class="input-field float-left w-100" id="nameInputField">
+                            <div class="chat-icon">
+                                <img src="agentpic.png" />
+                            </div>
+                            <div class="field-wrapper">
+                                <input type="text" name="nameField" placeholder="Name/Organization" class="float-left w-100" />
+                                <button class="send-btn" onClick="showEmailField()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gather Email -->
+                    <div class="agent-message agent-suggestion float-left w-100 hide" id="emailField">
+                        <div class="agent-message float-left w-100">
+                            <div class="agent-pic">
+                                <img src="chatbot.png" />
+                            </div>
+                            <div class="agent-msg">
+                                <p>Great, thank you  <span id="showUserName" style="font-weight: bold;"></span>! 
+                                    <br/>Nice to meet you! What's your business email address? </p>
+                            </div>
+                        </div>
+                        <div class="input-field float-left w-100" id="emailInputField">
+                            <div class="chat-icon">
+                                <img src="agentpic.png" />
+                            </div>
+                            <div class="field-wrapper">
+                                <input type="text" name="nameField" placeholder="Email Address" class="float-left w-100" />
+                                <button class="send-btn" onClick="showmobileField()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    <!-- Mobile Number Field -->
+                    <div class="agent-message agent-suggestion float-left w-100 hide" id="mobileField">
+                        <div class="agent-message float-left w-100">
+                            <div class="agent-pic">
+                                <img src="chatbot.png" />
+                            </div>
+                            <div class="agent-msg">
+                                <p>One last question, what is your mobile number? We need to contact you to make process faster</p>
+                            </div>
+                        </div>
+                        <div class="input-field float-left w-100" id="mobileInputField">
+                            <div class="chat-icon">
+                                <img src="agentpic.png" />
+                            </div>
+                            <div class="field-wrapper">
+                                <input type="text" name="mobileField" placeholder="Mobile Number" class="float-left w-100" />
+                                <button class="send-btn" onClick="showThankyou()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="agent-message float-left w-100 hide" id="thankYou">
+                        <div class="agent-pic">
+                            <img src="chatbot.png" />
+                        </div>
+                        <div class="agent-msg">
+                            <p>Great, thank you! One of our representatives will contact you on soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+        <script>
+            function closeChatbot(){
+                radioValue = null;
+                selectedServiceName = null;
+                userName = null;
+                $(".chatbot-icon").toggleClass("show")
+                $(".chatbot-close-icon").toggleClass("show")
+                $("#chatbotWrapper").toggleClass("show");
+            }
+            function scrollToBottom(){
+                $(".chat-messages").animate({
+                    scrollTop: $('.chat-messages')[0].scrollHeight - $('.chat-messages')[0].clientHeight
+                }, 1000);
+            }
+            function expandChatbot(){
+                $(".chatbot-icon").toggleClass("show")
+                $(".chatbot-close-icon").toggleClass("show")
+                $("#chatbotWrapper").toggleClass("show");
+                // $("#getStarted").delay(1000).slideDown( 300 );
+            }
+            function selectedService(){
+                $("#selection1").addClass("show");
+                var radioValue = $(".toggle-item input[name='service']:checked").val();
+                 document.getElementById("selectedService").innerHTML = radioValue
+                if(radioValue == "Public Cloud") { 
+                    $("#service1Selected").addClass("show");
+                } 
+                else{
+                    $("#service1Selected").removeClass("show");
+                }
+                scrollToBottom();
+            }
+            function showClientForm(){
+                var selectedServiceName = $(".toggle-item input[name='selectedService1']:checked").val();
+                document.getElementById("subService").innerHTML = selectedServiceName;
+                $("#clientForm").addClass("show");
+                scrollToBottom();
+            }
+            function showEmailField(){
+                // $("#nameInputField").removeClass('show').addClass('hide')
+                var userName = $("input[name='nameField']").val();
+                document.getElementById("showUserName").innerHTML = userName;
+                $("#emailField").addClass('show');
+                scrollToBottom();
+            }
+            function showmobileField(){
+                // $("#emailInputField").removeClass('show').addClass('hide')
+                $("#mobileField").addClass('show')
+                // var userEmail = $("input[name='emailField']").val();
+                // document.getElementById("showEmailAddress").innerHTML = userEmail;
+                scrollToBottom();
+            }
+            function showThankyou(){
+                // $("#mobileInputField").removeClass('show').addClass('hide')
+                // var userMobileNumber = $("input[name='mobileField']").val();
+                // document.getElementById("showMobileNumber").innerHTML = userMobileNumber
+                $("#thankYou").addClass('show')
+                scrollToBottom();
+            }
+            
+        </script>
+    </body>
+</html>
